@@ -1,11 +1,11 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import {useRouter} from 'next/router'
-import AppLayout from '../components/AppLayout'
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import AppLayout from "../components/AppLayout";
 // devit
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <>
@@ -19,10 +19,8 @@ export default function Home() {
           <a href="https://nextjs.org">devter</a>
         </h1>
         <nav>
-          <Link href='/Timeline'>
-            <a>
-              timeline
-            </a>
+          <Link href="/Timeline">
+            <a>timeline</a>
           </Link>
         </nav>
       </AppLayout>
@@ -32,10 +30,12 @@ export default function Home() {
           text-align: center;
           font-size: 48px;
         }
+
         nav {
           font-size: 24px;
           text-align: center;
         }
+
         .another-title {
           color: #333;
           font-size: 24px;
@@ -46,5 +46,5 @@ export default function Home() {
         }
       `}</style>
     </>
-  )
+  );
 }
