@@ -3,11 +3,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import AppLayout from "../components/AppLayout";
 import Button from "../components/Button";
+import GitHub from "../components/Icons/Github";
 import { breakpoints, colors, fonts } from "../styles/theme";
+import { loginWithGitHub } from "../firebase/client";
 // devit
 
 export default function Home() {
-  const router = useRouter();
+  const handleClick = () => {
+    loginWithGitHub()
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -23,13 +33,21 @@ export default function Home() {
           <h2>
             Talk about development <br /> with developers 👨‍💻👩‍💻
           </h2>
-          <Button>login with github</Button>
+          <div>
+            <Button onClick={handleClick}>
+              <GitHub fill="#fff" width={24} height={24} />
+              login with github
+            </Button>
+          </div>
         </section>
       </AppLayout>
 
       <style jsx>{`
         img {
           width: 120px;
+        }
+        div {
+          margin-top: 16px;
         }
         section {
           display: grid;
@@ -38,12 +56,12 @@ export default function Home() {
           place-items: center;
         }
         h1 {
-          color: ${colors.primary};
+          color: ${colors.secondary};
           font-weight: 800;
           margin-bottom: 0;
         }
         h2 {
-          color: ${colors.secondary};
+          color: ${colors.primary};
           font-size: 21px;
           margin: 0;
         }
