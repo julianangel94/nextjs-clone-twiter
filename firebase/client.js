@@ -14,6 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const loginWithGitHub = () => {
-  const githubProvider = new firebase.auth.GithubAuthProvider();
-  return firebase.auth().signInWithPopup(githubProvider);
+  var provider = new firebase.auth.GithubAuthProvider();
+  provider.addScope("repo");
+  return firebase.auth().signInWithPopup(provider);
 };
