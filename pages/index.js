@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -5,13 +6,21 @@ import AppLayout from "../components/AppLayout";
 import Button from "../components/Button";
 import GitHub from "../components/Icons/Github";
 import { breakpoints, colors, fonts } from "../styles/theme";
-import { loginWithGitHub } from "../firebase/client";
+import { loginWithGitHub, onAuthStateChanged } from "../firebase/client";
 // devit
 
 export default function Home() {
+  const [user, setUser] = useState(undefined);
+  console.log(user);
+  useEffect(() => {
+    onAuthStateChanged(setUser);
+  }, []);
+
   const handleClick = () => {
     loginWithGitHub()
       .then((user) => {
+        const { avatar, username, email } = user;
+        setUser(user);
         console.log(user);
       })
       .catch((err) => {
@@ -34,10 +43,18 @@ export default function Home() {
             Talk about development <br /> with developers 👨‍💻👩‍💻
           </h2>
           <div>
-            <Button onClick={handleClick}>
-              <GitHub fill="#fff" width={24} height={24} />
-              login with github
-            </Button>
+            {user === null && (
+              <Button onClick={handleClick}>
+                <GitHub fill="#fff" width={24} height={24} />
+                login with github
+              </Button>
+            )}
+            {user && user.avatar && (
+              <div>
+                <img src={user.avatar}></img>
+                <strong>{user.username}</strong>
+              </div>
+            )}
           </div>
         </section>
       </AppLayout>

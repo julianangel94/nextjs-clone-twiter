@@ -12,10 +12,35 @@ const firebaseConfig = {
   measurementId: "G-N015YLFM4H",
 };
 
-firebase.initializeApp(firebaseConfig);
+//se valida que no se tenga una instancia ya creada para initialize firebase
+!firebase.apps.length && firebase.initializeApp(firebaseConfig);
 
+//Informacion del usuario
+export const mapUserFromFirebaseAuth = (user) => {
+  console.log(user);
+  const { displayName, email, photoURL } = user;
+
+  return {
+    avatar: photoURL,
+    username: displayName,
+    email,
+  };
+};
+
+//Function for to know if the user change state
+export const onAuthStateChanged = (onChange) => {
+  return firebase.auth().onAuthStateChanged((user) => {
+    const normalizedUser = mapUserFromFirebaseAuth(user);
+    onChange(normalizedUser);
+  });
+};
+
+//Function to login with Github
 export const loginWithGitHub = () => {
-  var provider = new firebase.auth.GithubAuthProvider();
-  provider.addScope("repo");
-  return firebase.auth().signInWithPopup(provider);
+  const githubProvider = new firebase.auth.GithubAuthProvider();
+  return firebase.auth().signInWithPopup(githubProvider);
+  // .then(mapUserFromFirebaseAuth); este codigo es lo mismo que el de abajo
+  // .then((user) => {
+  //   return mapUserFromFirebaseAuth(user);
+  // });
 };
